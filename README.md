@@ -33,8 +33,8 @@
 - Product catalog with filtering and search
 
 **Live Website:** https://viznest.vercel.app  
-**GitHub Repository:** https://github.com/ArunGautam004/VizNest.git
-**Developer:** Arun Gautam  And Md. Kaif Iqbal
+**GitHub Repository:** https://github.com/Arun0041/VizNest.git 
+**Developer:** Arun Gautam  
 **Email:** arungautam0041@gmail.com
 
 ---
@@ -140,7 +140,7 @@ GOOGLE_CLIENT_SECRET=your_google_client_secret
 
 ```bash
 # Clone repository
-git clone https://github.com/ArunGautam004/VizNest.git
+git clone https://github.com/Arun0041/VizNest.git
 cd Viznest-Live
 
 # Navigate to backend
@@ -764,7 +764,8 @@ For development/testing use these test cards:
 
 **Developer:** Arun Gautam  
 **Email:** arungautam0041@gmail.com  
-**GitHub:** https://github.com/ArunGautam004/VizNest.git 
+**GitHub:** https://github.com/Arun0041  
+**Project:** https://github.com/Arun0041/VizNest.git
 **Video Demo:** https://www.linkedin.com/feed/update/urn:li:activity:7409512616924131330/  
 **Live Demo:** https://viznest.vercel.app
 
