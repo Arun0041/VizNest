@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const Order = require('../models/Order');
+const Product = require('../models/Product');
 const { protect, admin } = require('../middleware/auth');
-const PDFDocument = require('pdfkit'); // ✅ Required for Invoices
+const PDFDocument = require('pdfkit');
 const fs = require('fs');
 
-// 1. CREATE ORDER
+// 1. CREATE ORDER (WITH SOLD UNITS UPDATE)
 router.post('/', protect, async (req, res) => {
   const {
     orderItems,
@@ -21,7 +22,20 @@ router.post('/', protect, async (req, res) => {
   if (orderItems && orderItems.length === 0) {
     res.status(400).json({ message: 'No order items' });
     return;
-  } else {
+  }
+
+  try {
+    // ✅ UPDATE SOLD UNITS FOR EACH PRODUCT
+    for (const item of orderItems) {
+      const product = await Product.findById(item.product);
+      if (product) {
+        product.sold = (product.sold || 0) + item.qty;
+        await product.save();
+        console.log(`✅ Updated ${product.name}: sold units now ${product.sold}`);
+      }
+    }
+
+    // CREATE ORDER
     const order = new Order({
       orderItems,
       user: req.user._id,
@@ -36,7 +50,11 @@ router.post('/', protect, async (req, res) => {
     });
 
     const createdOrder = await order.save();
+    console.log(`✅ Order created: ${createdOrder._id}`);
     res.status(201).json(createdOrder);
+  } catch (error) {
+    console.error("❌ Order creation error:", error.message);
+    res.status(500).json({ message: 'Failed to create order: ' + error.message });
   }
 });
 
@@ -76,7 +94,7 @@ router.get('/:id', protect, async (req, res) => {
   }
 });
 
-// ✅ 5. DOWNLOAD INVOICE (New Route)
+// 5. DOWNLOAD INVOICE
 router.get('/:id/invoice', protect, async (req, res) => {
   try {
     const order = await Order.findById(req.params.id).populate('user', 'name email');
